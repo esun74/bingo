@@ -6,20 +6,39 @@
 #include <cstring>
 #include <list>
 using namespace std;
-class cards {
+
+class deck {
 public:
-	cards();
-	~cards();
-	void write(int location, int number);
+	deck();
+	~deck();
+	deck(int numberofcards);
+
+	void write(int nthcard, int location, int number);
 	void print();
 	bool check();
 	void mark(int mark);
-	void clear();  
+	void clear();
+
+	template <typename T>
+	T * numbertopointer(int number);
 
 private:
-	int *numbers = new int[30];
-	bool *called = new bool[30];
-};
+	int cardcount;
+	class cards {
+	public:
+		cards();
+		~cards();
+		void cardwrite(int location, int number);
+		void cardprint();
+		bool cardcheck();
+		void cardmark(int mark);
+		void cardclear();
 
+	private:
+		int *numbers;
+		bool *called;
+	};
+	cards *data;
+};
 
 #endif
