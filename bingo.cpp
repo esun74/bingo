@@ -8,6 +8,7 @@ using namespace std;
 
 void usefile();
 void userentry();
+void calls(cards data);
 
 int main()
 {
@@ -34,13 +35,16 @@ void usefile()
 	else
 	{
 		int location = 0;
-		while (infile >> thing)
-		{
-			data.write(location, thing);
-			location++;
-		}
+		for (int i = 0; i < 5; i++)
+			for (int ii = 0; ii < 5; ii++)
+			{
+				infile >> thing;
+				data.write(location, thing);
+				location++;
+			}
 	}
 	infile.close();
+	calls(data);
 }
 
 void userentry()
@@ -61,5 +65,22 @@ void userentry()
 		}
 		system("cls");
 	}
+	calls(data);
+}
+
+void calls(cards data)
+{
+	int thing;
+	bool winning = false;
+	while (!winning)
+	{
+		data.print();
+		cout << "Enter called number" << endl;
+		cin >> thing;
+		data.mark(thing);
+		system("cls");
+		winning = data.check();
+	}
 	data.print();
+	cout << "BINGO!!!" << endl;
 }
