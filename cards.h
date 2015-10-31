@@ -9,7 +9,7 @@ using namespace std;
 class cards {
 public:
 	cards();
-
+	~cards();
 	void write(int location, int number);
 	void print();
 	bool check();
@@ -17,8 +17,8 @@ public:
 	void clear();  
 
 private:
-	int *numbers = new int[25];
-	bool *called = new bool[25];
+	int *numbers = new int[30];
+	bool *called = new bool[30];
 };
 
 
