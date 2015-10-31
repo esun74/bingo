@@ -1,22 +1,78 @@
 #include "cards.h"
 
-cards::cards()
+
+deck::deck()
 {
-	this->clear();
+	this->data = new cards[1];
+	cardcount = 1;
 }
 
-cards::~cards()
+deck::~deck()
 {
-	//delete[] numbers;
-	//delete[] called;
+	this->data->~cards();
+	delete[] data;
+}
+deck::deck(int numberofcards)
+{
+	this->data = new cards[numberofcards];
+	cardcount = numberofcards;
+}
+deck::cards::cards()
+{
+	this->numbers = new int[30];
+	this->called = new bool[30];
+	this->cardclear();
 }
 
-void cards::write(int location, int number)
+template <typename T>
+T * deck::numbertopointer(int number)
+{
+	T *cardpoint = (this->data + number);
+	return cardpoint;
+}
+
+void deck::write(int nthcard, int location, int number)
+{
+		//*cardpoint = this->data[i];
+			//cardpoint->cardwrite(location, number);
+		this->numbertopointer<cards>(nthcard)->cardwrite(location, number);
+}
+void deck::print()
+{
+	for (int i = 0; i < this->cardcount; i++)
+		this->numbertopointer<cards>(i)->cardprint();
+}
+bool deck::check()
+{
+	bool bingo = false;
+	for (int i = 0; i < this->cardcount; i++)
+		if (this->numbertopointer<cards>(i)->cardcheck())
+			bingo = true;
+	return bingo;
+}
+void deck::mark(int mark)
+{
+	for (int i = 0; i < this->cardcount; i++)
+		this->numbertopointer<cards>(i)->cardmark(mark);
+}
+void deck::clear()
+{
+	for (int i = 0; i < this->cardcount; i++)
+		this->numbertopointer<cards>(i)->cardclear();
+}
+
+deck::cards::~cards()
+{
+	delete[] numbers;
+	delete[] called;
+}
+
+void deck::cards::cardwrite(int location, int number)
 {
 	this->numbers[location] = number;
 	this->called[location] = false;
 }
-void cards::print()
+void deck::cards::cardprint()
 {
 	for (int i = 0; i < 25; i++)
 	{
@@ -36,7 +92,7 @@ void cards::print()
 	}
 	cout << endl;
 }
-bool cards::check()
+bool deck::cards::cardcheck()
 {
 	bool call = false;
 	this->called[12] = true;
@@ -72,13 +128,13 @@ bool cards::check()
 		? true : false;
 	return call;
 }
-void cards::mark(int mark)
+void deck::cards::cardmark(int mark)
 {
 	for (int i = 0; i < 25; i++)
 		if (this->numbers[i] == mark)
 			this->called[i] = true;
 }
-void cards::clear()
+void deck::cards::cardclear()
 {
 	for (int i = 0; i < 25; i++)
 	{
