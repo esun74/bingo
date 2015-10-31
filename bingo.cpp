@@ -1,14 +1,13 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
-#include <string>
 #include <fstream>
 #include "cards.h"
 using namespace std;
 
 void usefile();
 void userentry();
-void calls(cards data);
+void calls(deck bingo);
 
 int main()
 {
@@ -26,61 +25,87 @@ int main()
 void usefile()
 {
 	system("cls");
+	int countcards;
+	cout << "How many cards do you have?" << endl;
+	cin >> countcards;
+	system("cls");
 	int thing;
-	cards data;
+	deck bingo(countcards);
 	ifstream infile;
 	infile.open("cards.txt");
 	if (infile.fail())
+	{
 		cout << "Could not open file!" << endl;
+		userentry();
+	}
+		
 	else
 	{
-		int location = 0;
-		for (int i = 0; i < 5; i++)
-			for (int ii = 0; ii < 5; ii++)
-			{
-				infile >> thing;
-				data.write(location, thing);
-				location++;
-			}
+		for (int nthcard = 0; nthcard < countcards; nthcard++)
+		{
+			int location = 0;
+			for (int i = 0; i < 5; i++)
+				for (int ii = 0; ii < 5; ii++)
+				{
+					infile >> thing;
+					bingo.write(nthcard, location, thing);
+					location++;
+				}
+		}
 	}
 	infile.close();
-	calls(data);
+	calls(bingo);
 }
 
 void userentry()
 {
 	system("cls");
-	cards data;
+	int countcards;
+	cout << "How many cards do you have?" << endl;
+	cin >> countcards;
+	system("cls");
+	deck bingo(countcards);
 	int thing, location = 0;
 	cout << "Enter card numbers" << endl;
-	for (int i = 0; i < 5; i++)
+	for (int nthcard = 0; nthcard < countcards; nthcard++)
 	{
-		data.print();
-		cout << "Enter line " << i + 1 << endl;
-		for (int ii = 0; ii < 5; ii++)
+		for (int i = 0; i < 5; i++)
 		{
-			cin >> thing;
-			data.write(location, thing);
-			location++;
+			bingo.print();
+			cout << "Enter line " << i + 1 << endl;
+			for (int ii = 0; ii < 5; ii++)
+			{
+				cin >> thing;
+				bingo.write(nthcard, location, thing);
+				location++;
+			}
+			system("cls");
 		}
-		system("cls");
 	}
-	calls(data);
+	calls(bingo);
 }
 
-void calls(cards data)
+void calls(deck bingo)
 {
 	int thing;
 	bool winning = false;
 	while (!winning)
 	{
-		data.print();
+		bingo.print();
 		cout << "Enter called number" << endl;
 		cin >> thing;
-		data.mark(thing);
+		bingo.mark(thing);
 		system("cls");
-		winning = data.check();
+		winning = bingo.check();
 	}
-	data.print();
+	bingo.print();
 	cout << "BINGO!!!" << endl;
+	char response;
+	cout << "Do you want to play again? Y/N" << endl;
+	cin >> response;
+	if (toupper(response) == 'Y')
+	{
+		bingo.~deck();
+		main();
+	}
 }
