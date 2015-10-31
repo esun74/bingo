@@ -5,6 +5,12 @@ cards::cards()
 	this->clear();
 }
 
+cards::~cards()
+{
+	//delete[] numbers;
+	//delete[] called;
+}
+
 void cards::write(int location, int number)
 {
 	this->numbers[location] = number;
@@ -32,35 +38,38 @@ void cards::print()
 }
 bool cards::check()
 {
-	bool call;
+	bool call = false;
+	this->called[12] = true;
 	for (int i = 0; i < 5; i++)
 	{
-		call = this->called[i + 00] 
-			== this->called[i + 05] 
-			== this->called[i + 10] 
-			== this->called[i + 15] 
-			== this->called[i + 20]
-			== true 
-			|| this->called[i * 5 + 0]
-			== this->called[i * 5 + 1]
-			== this->called[i * 5 + 2]
-			== this->called[i * 5 + 3]
-			== this->called[i * 5 + 4]
-			== true ? true : false; 
+		call = 
+			  (this->called[i + 00] 
+			&& this->called[i + 05] 
+			&& this->called[i + 10]
+			&& this->called[i + 15]
+			&& this->called[i + 20])
+			|| 
+			  (this->called[i * 5 + 0]
+			&& this->called[i * 5 + 1]
+			&& this->called[i * 5 + 2]
+			&& this->called[i * 5 + 3]
+			&& this->called[i * 5 + 4])
+			? true : false; 
 		if (call) return true;
 	}
-	call = this->called[0]
-		== this->called[6]
-		== this->called[12]
-		== this->called[18]
-		== this->called[24]
-		== true
-		|| this->called[4]
-		== this->called[8]
-		== this->called[12]
-		== this->called[16]
-		== this->called[20]
-		== true ? true : false;
+	call = 
+		  (this->called[0]
+		&& this->called[6]
+		&& this->called[12]
+		&& this->called[18]
+		&& this->called[24])
+		|| 
+		  (this->called[4]
+		&& this->called[8]
+		&& this->called[12]
+		&& this->called[16]
+		&& this->called[20])
+		? true : false;
 	return call;
 }
 void cards::mark(int mark)
