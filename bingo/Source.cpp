@@ -22,6 +22,7 @@ int main()
 	return 0;
 }
 
+// reads in the bingo sheets from a file
 void usefile()
 {
 	system("cls");
@@ -57,6 +58,7 @@ void usefile()
 	calls(bingo);
 }
 
+// asks the user to enter the cards line by line
 void userentry()
 {
 	system("cls");
@@ -87,6 +89,7 @@ void userentry()
 	calls(bingo);
 }
 
+// takes the user's input and checks if any of the sheets have the number and whether there is a bingo or not
 void calls(deck bingo)
 {
 	int thing;

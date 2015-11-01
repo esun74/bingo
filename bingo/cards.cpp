@@ -1,29 +1,30 @@
 #include "cards.h"
 
-
+// creates a deck with one card as the default constructor
 deck::deck()
 {
 	this->data = new cards[1];
 	cardcount = 1;
 }
 
+// destructs the deck
 deck::~deck()
 {
+	for (int i = 0; i < cardcount; i++)
+		this->numbertopointer<cards>(i)->~cards();
 	delete[] data;
 }
 
+// creates "numberofcards" cards in the deck
 deck::deck(int numberofcards)
 {
 	this->data = new cards[numberofcards];
 	cardcount = numberofcards;
 }
-deck::cards::cards()
-{
-	this->numbers = new int[30];
-	this->called = new bool[30];
-	this->cardclear();
-}
 
+// makes a pointer which copies the pointer in the deck pointing to the card we want
+// using a template because if I use cards * deck::numbertopointer(int number) it says that "identifier 'cards' is unidentified"
+// might be weird but it works
 template <typename T>
 T * deck::numbertopointer(int number)
 {
@@ -31,15 +32,35 @@ T * deck::numbertopointer(int number)
 	return cardpoint;
 }
 
+// creates the card and sets 25 zeroes in it
+deck::cards::cards()
+{
+	this->numbers = new int[25];
+	this->called = new bool[25];
+	this->cardclear();
+}
+
+// destructs the card
+deck::cards::~cards()
+{
+	delete[] numbers;
+	delete[] called;
+}
+
+// basically uses cardwrite on the nth card
 void deck::write(int nthcard, int location, int number)
 {
 	this->numbertopointer<cards>(nthcard)->cardwrite(location, number);
 }
+
+// prints all cards
 void deck::print()
 {
 	for (int i = 0; i < this->cardcount; i++)
 		this->numbertopointer<cards>(i)->cardprint();
 }
+
+// checks all cards - if any check is true, then there is a bingo
 bool deck::check()
 {
 	bool bingo = false;
@@ -48,22 +69,29 @@ bool deck::check()
 			bingo = true;
 	return bingo;
 }
+
+// uses cardmark on all cards
 void deck::mark(int mark)
 {
 	for (int i = 0; i < this->cardcount; i++)
 		this->numbertopointer<cards>(i)->cardmark(mark);
 }
+
+// uses cardclear on all cards
 void deck::clear()
 {
 	for (int i = 0; i < this->cardcount; i++)
 		this->numbertopointer<cards>(i)->cardclear();
 }
 
+// overwrites "location" in the int array with "number" basically
 void deck::cards::cardwrite(int location, int number)
 {
 	this->numbers[location] = number;
 	this->called[location] = false;
 }
+
+// prints the sheet numbers and the bool side by side
 void deck::cards::cardprint()
 {
 	for (int i = 0; i < 25; i++)
@@ -84,6 +112,8 @@ void deck::cards::cardprint()
 	}
 	cout << endl;
 }
+
+// checks the card to see if there are any winning rows, columns, or diagonals
 bool deck::cards::cardcheck()
 {
 	bool call = false;
@@ -120,12 +150,16 @@ bool deck::cards::cardcheck()
 		? true : false;
 	return call;
 }
+
+// goes through the array to see if any is equal to "mark" - if it is, change the bool to true
 void deck::cards::cardmark(int mark)
 {
 	for (int i = 0; i < 25; i++)
 		if (this->numbers[i] == mark)
 			this->called[i] = true;
 }
+
+// overwrites all numbers to 0 and bools to false in this card
 void deck::cards::cardclear()
 {
 	for (int i = 0; i < 25; i++)
