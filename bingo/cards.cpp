@@ -7,12 +7,12 @@ deck::deck()
 	cardcount = 1;
 }
 
-// destructs the deck
+// destructs the deck - don't need to destruct arrays?
 deck::~deck()
 {
-	for (int i = 0; i < cardcount; i++)
-		this->numbertopointer<cards>(i)->~cards();
-	delete[] data;
+	//for (int i = 0; i < cardcount; i++)
+		//this->numbertopointer<cards>(i)->~cards();
+	//delete[] data;
 }
 
 // creates "numberofcards" cards in the deck
@@ -40,11 +40,11 @@ deck::cards::cards()
 	this->cardclear();
 }
 
-// destructs the card
+// destructs the card - don't need to destruct arrays?
 deck::cards::~cards()
 {
-	delete[] numbers;
-	delete[] called;
+	//delete[] this->numbers;
+	//delete[] this->called;
 }
 
 // basically uses cardwrite on the nth card
