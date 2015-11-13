@@ -11,7 +11,7 @@ deck::deck()
 deck::~deck()
 {
 	//for (int i = 0; i < cardcount; i++)
-		//this->numbertopointer<cards>(i)->~cards();
+	//this->numbertopointer<cards>(i)->~cards();
 	//delete[] data;
 }
 
@@ -61,13 +61,14 @@ void deck::print()
 }
 
 // checks all cards - if any check is true, then there is a bingo
-bool deck::check()
+void deck::check()
 {
-	bool bingo = false;
 	for (int i = 0; i < this->cardcount; i++)
-		if (this->numbertopointer<cards>(i)->cardcheck())
-			bingo = true;
-	return bingo;
+		if (this->numbertopointer<cards>(i)->cardcheck()) 
+		{
+			cout << "Bingo on card #" << i + 1 << endl;
+			this->numbertopointer<cards>(i)->cardprint();
+		}	
 }
 
 // uses cardmark on all cards
@@ -97,14 +98,14 @@ void deck::cards::cardprint()
 	for (int i = 0; i < 25; i++)
 	{
 		cout << left << setw(5) << this->numbers[i];
-		if ((i + 1) % 5 == 0) 
+		if ((i + 1) % 5 == 0)
 		{
 			cout << "               ";
 			for (int ii = 0; ii < 5; ii++)
 			{
-				if (!this->called[i + ii - 4]) 
-					cout << left << setw(5) << "O"; 
-				else 
+				if (!this->called[i + ii - 4])
+					cout << left << setw(5) << "O";
+				else
 					cout << left << setw(5) << "X";
 			}
 			cout << endl;
@@ -120,33 +121,33 @@ bool deck::cards::cardcheck()
 	this->called[12] = true;
 	for (int i = 0; i < 5; i++)
 	{
-		call = 
-			  (this->called[i + 00] 
-			&& this->called[i + 05] 
+		call =
+			  (this->called[i + 00]
+			&& this->called[i + 05]
 			&& this->called[i + 10]
 			&& this->called[i + 15]
 			&& this->called[i + 20])
-			|| 
+			||
 			  (this->called[i * 5 + 0]
 			&& this->called[i * 5 + 1]
 			&& this->called[i * 5 + 2]
 			&& this->called[i * 5 + 3]
 			&& this->called[i * 5 + 4])
-			? true : false; 
+			? true : false;
 		if (call) return true;
 	}
-	call = 
-		  (this->called[0]
-		&& this->called[6]
-		&& this->called[12]
-		&& this->called[18]
-		&& this->called[24])
-		|| 
-		  (this->called[4]
-		&& this->called[8]
-		&& this->called[12]
-		&& this->called[16]
-		&& this->called[20])
+	call =
+		(this->called[0]
+			&& this->called[6]
+			&& this->called[12]
+			&& this->called[18]
+			&& this->called[24])
+		||
+		(this->called[4]
+			&& this->called[8]
+			&& this->called[12]
+			&& this->called[16]
+			&& this->called[20])
 		? true : false;
 	return call;
 }

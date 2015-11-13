@@ -9,7 +9,7 @@ using namespace std;
 // hence the naming: a deck of cards
 class deck {
 public:
-	
+
 	// default constructor
 	deck();
 
@@ -31,7 +31,7 @@ public:
 	void print();
 
 	// checks all cards in the deck for a bingo
-	bool check();
+	void check();
 
 	// searches all cards in the deck for the number "mark" and flips the corresponding bool 
 	void mark(int mark);
