@@ -10,9 +10,7 @@ deck::deck()
 // destructs the deck - don't need to destruct arrays?
 deck::~deck()
 {
-	//for (int i = 0; i < cardcount; i++)
-	//this->numbertopointer<cards>(i)->~cards();
-	//delete[] data;
+	delete[] data;
 }
 
 // creates "numberofcards" cards in the deck
@@ -41,11 +39,7 @@ deck::cards::cards()
 }
 
 // destructs the card - don't need to destruct arrays?
-deck::cards::~cards()
-{
-	//delete[] this->numbers;
-	//delete[] this->called;
-}
+deck::cards::~cards() {}
 
 // basically uses cardwrite on the nth card
 void deck::write(int nthcard, int location, int number)
@@ -69,6 +63,16 @@ void deck::check()
 			cout << "Bingo on card #" << i + 1 << endl;
 			this->numbertopointer<cards>(i)->cardprint();
 		}	
+}
+
+void deck::patterncheck(bool *pattern)
+{
+	for (int i = 0; i < this->cardcount; i++)
+		if (this->numbertopointer<cards>(i)->cardcheckpattern(pattern))
+		{
+			cout << "Bingo on card #" << i + 1 << endl;
+			this->numbertopointer<cards>(i)->cardprint();
+		}
 }
 
 // uses cardmark on all cards
@@ -121,34 +125,40 @@ bool deck::cards::cardcheck()
 	this->called[12] = true;
 	for (int i = 0; i < 5; i++)
 	{
-		call =
-			  (this->called[i + 00]
-			&& this->called[i + 05]
-			&& this->called[i + 10]
-			&& this->called[i + 15]
-			&& this->called[i + 20])
-			||
-			  (this->called[i * 5 + 0]
-			&& this->called[i * 5 + 1]
-			&& this->called[i * 5 + 2]
-			&& this->called[i * 5 + 3]
-			&& this->called[i * 5 + 4])
-			? true : false;
+		call =    (this->called[i + 00]
+				&& this->called[i + 05]
+				&& this->called[i + 10]
+				&& this->called[i + 15]
+				&& this->called[i + 20]
+				|| this->called[i * 5 + 0]
+				&& this->called[i * 5 + 1]
+				&& this->called[i * 5 + 2]
+				&& this->called[i * 5 + 3]
+				&& this->called[i * 5 + 4]);
 		if (call) return true;
 	}
-	call =
-		(this->called[0]
+	call =    (this->called[0]
 			&& this->called[6]
 			&& this->called[12]
 			&& this->called[18]
-			&& this->called[24])
-		||
-		(this->called[4]
+			&& this->called[24]
+			|| this->called[4]
 			&& this->called[8]
 			&& this->called[12]
 			&& this->called[16]
-			&& this->called[20])
-		? true : false;
+			&& this->called[20]);
+	return call;
+}
+
+bool deck::cards::cardcheckpattern(bool *pattern)
+{
+	bool call = false;
+	this->called[12] = true;
+	for (int i = 0; i < 25; i++)
+	{
+		call = (this->called[i] >= pattern[i]);
+		if (!call) return false;
+	}
 	return call;
 }
 

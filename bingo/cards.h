@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <list>
 using namespace std;
 
 // the deck represents multiple bingo sheets and the cards represent individual sheets
@@ -33,16 +34,15 @@ public:
 	// checks all cards in the deck for a bingo
 	void check();
 
+	void patterncheck(bool *pattern);
+
 	// searches all cards in the deck for the number "mark" and flips the corresponding bool 
 	void mark(int mark);
 
+	
+
 	// clears all 
 	void clear();
-
-private:
-
-	// keeps track of the number of cards in the deck
-	int cardcount;
 
 	// the individual bingo sheets
 	class cards {
@@ -62,6 +62,8 @@ private:
 		// checks the card
 		bool cardcheck();
 
+		bool cardcheckpattern(bool *pattern);
+
 		// searches the card and marks it if found
 		void cardmark(int mark);
 
@@ -76,6 +78,12 @@ private:
 		// array of 25 bools - is true when the corresponding number on the bingo sheet has been called
 		bool *called;
 	};
+private:
+
+	// keeps track of the number of cards in the deck
+	int cardcount;
+
+	
 
 	// array of cards - size specified by user, 1 by default
 	cards *data;
